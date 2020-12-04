@@ -1,0 +1,22 @@
+# Variables
+variable "vsphere_vcenter" {}
+variable "vsphere_user" {}
+variable "vsphere_password" {}
+variable "vsphere_datacenter" {}
+variable "vsphere_cluster" {}
+variable "vsphere_resource_pool" {}
+variable "vsphere_folder" {}
+variable "VBR_name" {}
+variable "VBR_IP" {}
+variable "WinProxy_name" {}
+variable "WinProxy_IP" {}
+variable "LinProxy_name" {}
+variable "LinProxy_IP" {}
+variable "XFSRepo_name" {}
+variable "XFSRepo_IP" {}
+variable "Domain" {}
+variable "Domain_Admin" {}
+variable "Domain_Password" {}
+variable "Gateway" {}
+variable "ubuntu1804_password" {}
+variable "centos_password" {}
