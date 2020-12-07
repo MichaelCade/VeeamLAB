@@ -33,8 +33,16 @@ resource "vsphere_virtual_machine" "VBR" {
         join_domain = "${var.Domain}"
         domain_admin_user = "${var.Domain_Admin}"
         domain_admin_password = "${var.Domain_Password}"
-      }
+        admin_password = "${var.Domain_Password}"
+        auto_logon              = true
+        auto_logon_count        = 1
  
+        run_once_command_list = [
+            "cmd.exe /C PowerShell.exe Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))",
+            "cmd.exe /C Powershell.exe choco install veeam-backup-and-replication-console",
+        ]
+      }
+      
       network_interface {
         ipv4_address = "${var.VBR_IP}"
         ipv4_netmask = 24
