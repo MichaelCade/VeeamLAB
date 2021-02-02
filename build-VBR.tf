@@ -38,12 +38,7 @@ resource "vsphere_virtual_machine" "VBR" {
         auto_logon_count        = 1
  
         run_once_command_list = [
-        #"net use p: '\\\\10.0.0.2\\share\\Veeam\\B & R\\v11 RC' /user:APLABS\\MichaelCade Veeam123!",
-        #"net use v: \\\\10.0.0.2\\share\\CADE\\Scripts\\BR-UnattendedInstall-v10 /user:APLABS\\MichaelCade Veeam123!",
-        #"Powershell.exe -command $isoImg = P:\\VeeamBackup&Replication_11.0.0.810.RC1.iso",
-        #"Powershell.exe -command Mount-DiskImage -ImagePath $isoImg -PassThru | Out-Null",
-        "Powershell.exe -file \\\\dc1\\share\\CADE\\Scripts\\BR-UnattendedInstall-v10\\MountVBR_ISO.ps1",
-        "Powershell.exe -command \\\\dc1\\share\\CADE\\Scripts\\BR-UnattendedInstall-v10\\Install_Veeam.ps1 -InstallOption VBRServerInstall",
+          "cmd.exe /C Powershell.exe -ExecutionPolicy bypass -file \\\\10.0.40.20\\AutomatedVBRInstall\\AutomatedVBRInstall.ps1",
         ]
       }
       
