@@ -22,8 +22,6 @@ resource "vsphere_virtual_machine" "VBR" {
     eagerly_scrub    = "${data.vsphere_virtual_machine.windows_template.disks.0.eagerly_scrub}"
     thin_provisioned = "${data.vsphere_virtual_machine.windows_template.disks.0.thin_provisioned}"
   }
-
-
   clone {
     template_uuid = "${data.vsphere_virtual_machine.windows_template.id}"
  
@@ -35,7 +33,7 @@ resource "vsphere_virtual_machine" "VBR" {
         domain_admin_password = "${var.Domain_Password}"
         admin_password = "${var.Domain_Password}"
         auto_logon              = true
-        auto_logon_count        = 1
+        auto_logon_count        = 3
  
         run_once_command_list = [
           "cmd.exe /C Powershell.exe -ExecutionPolicy bypass -file \\\\10.0.40.20\\AutomatedVBRInstall\\AutomatedVBRInstall.ps1",
@@ -47,7 +45,7 @@ resource "vsphere_virtual_machine" "VBR" {
         ipv4_netmask = 24
       }
       ipv4_gateway = "${var.Gateway}"
-      dns_server_list = ["10.0.40.2", "10.0.0.2"]
+      dns_server_list = ["${var.dns1}", "${var.dns2}"]
     }
   }
 }
@@ -93,7 +91,7 @@ resource "vsphere_virtual_machine" "WinProxy1" {
         ipv4_netmask = 24
       }
       ipv4_gateway = "${var.Gateway}"
-      dns_server_list = ["10.0.40.2", "10.0.0.2"]
+      dns_server_list = ["${var.dns1}", "${var.dns2}"]
     }
   }
 }
@@ -136,7 +134,7 @@ resource "vsphere_virtual_machine" "LinProxy1" {
         ipv4_netmask = 24
       }
       ipv4_gateway = "${var.Gateway}"
-      dns_server_list = ["10.0.40.2"]
+      dns_server_list = ["${var.dns1}", "${var.dns2}"]
       dns_suffix_list = ["${var.Domain}"]
     }
   }
@@ -188,7 +186,7 @@ resource "vsphere_virtual_machine" "XFSRepo" {
         ipv4_netmask = 24
       }
       ipv4_gateway = "${var.Gateway}"
-      dns_server_list = ["10.0.40.2"]
+      dns_server_list = ["${var.dns1}", "${var.dns2}"]
       dns_suffix_list = ["${var.Domain}"]
     }
   }

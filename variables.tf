@@ -6,6 +6,14 @@ variable "vsphere_datacenter" {}
 variable "vsphere_cluster" {}
 variable "vsphere_resource_pool" {}
 variable "vsphere_folder" {}
+variable "vsphere_datastore" {}
+variable "vsphere_network" {}
+variable "windows_template" {}
+variable "ubuntu2004_template" {}
+variable "ubuntu1804_template" {}
+variable "centos_template" {}
+variable "dns1" {}
+variable "dns2" {}
 variable "VBR_name" {}
 variable "VBR_IP" {}
 variable "WinProxy_name" {}

@@ -9,12 +9,12 @@ data "vsphere_datacenter" "dc" {
   name = "${var.vsphere_datacenter}"
 }
 data "vsphere_datastore" "datastore" {
-  name = "vsanDatastore"
+  name = "${var.vsphere_datastore}"
   datacenter_id = "${data.vsphere_datacenter.dc.id}"
 }
  
 data "vsphere_compute_cluster" "cluster" {
-  name = "MEGA-03"
+  name = "${var.vsphere_cluster}"
   datacenter_id = "${data.vsphere_datacenter.dc.id}"
 }
 
@@ -24,23 +24,23 @@ data "vsphere_resource_pool" "pool" {
 }
  
 data "vsphere_network" "network" {
-  name = "TPM03-740-1"
+  name = "${var.vsphere_network}"
   datacenter_id = "${data.vsphere_datacenter.dc.id}"
 }
  
 data "vsphere_virtual_machine" "windows_template" {
-  name = "WIn19_Template"
+  name = "${var.windows_template}"
   datacenter_id = "${data.vsphere_datacenter.dc.id}"
 }
 data "vsphere_virtual_machine" "Ubuntu2004_template" {
-  name          = "TPM04-MC/TPM04-Ubuntu-2004-Template"
+  name          = "${var.ubuntu2004_template}"
   datacenter_id = "${data.vsphere_datacenter.dc.id}"
 }
 data "vsphere_virtual_machine" "Ubuntu1804_template" {
-  name          = "TPM04-MC/TPM04-Ubuntu-1804-Template"
+  name          = "${var.ubuntu1804_template}"
   datacenter_id = "${data.vsphere_datacenter.dc.id}"
 }
 data "vsphere_virtual_machine" "CentOS_template" {
-  name          = "TPM03-AS/TPM03-CENTOS7-TEMPLATE"
+  name          = "${var.centos_template}"
   datacenter_id = "${data.vsphere_datacenter.dc.id}"
 }
