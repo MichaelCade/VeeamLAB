@@ -35,3 +35,15 @@ Update - Jan 21st 2021
 Currently this terraform script will deploy 1 x VBR Management Server, 1 x Veeam Windows Proxy, 1 x Veeam Linux Proxy and 1 x XFS Linux Repository. The unattended installation scripts you will find in build-vbr.tf are going to be uploaded to a VeeamConfiguration repository, these scripts are stored on a lab share and for these to run I need to login to the newly created machine when available to run, I am exploring other options to better this both remote-exec and local-exec 
 
 
+## Usage
+
+- Download the files also Terraform, this has been tested with v0.14.7
+- Create templates for Windows, Ubuntu 20_04 and 18_04 along with a CentOS template
+- Update the variables withing terraform.tfvars so that they match your environment, All of these should need to be changed
+- Create a resource pool and folder in vSphere match what is held within vsphere_resource_pool & vsphere_folder if they already do no exist
+- Issue a terraform init within the code folder
+- Issue a terraform plan within the code folder and ensure there are not errors
+- Perform a terraform apply and go grab a brew whilst it all builds :) 
+
+
+
