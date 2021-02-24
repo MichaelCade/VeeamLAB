@@ -51,6 +51,6 @@ cmd.exe /c netsh advfirewall firewall add rule name="WinRM 5985" protocol=TCP di
 cmd.exe /c netsh advfirewall firewall add rule name="ICMP Allow incoming V4 echo request" protocol=icmpv4:8,any dir=in action=allow
 #cmd.exe /c net stop winrm
 #cmd.exe /c sc config winrm start= auto
-c#md.exe /c net start winrm
+#cmd.exe /c net start winrm
 
 New-Item -Path "c:\" -Name "logfiles" -ItemType "directory"
