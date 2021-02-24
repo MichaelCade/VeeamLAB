@@ -34,6 +34,8 @@ cmd.exe /c winrm set "winrm/config/client/auth" '@{Basic="true"}'
 cmd.exe /c winrm set "winrm/config/service/auth" '@{CredSSP="true"}'
 cmd.exe /c winrm set "winrm/config/listener?Address=*+Transport=HTTPS" "@{Port=`"5986`";Hostname=`"packer-ami-builder`";CertificateThumbprint=`"$($Cert.Thumbprint)`"}"
 cmd.exe /c netsh advfirewall firewall add rule name="WinRM-SSL (5986)" dir=in action=allow protocol=TCP localport=5986
+cmd.exe /c net user winrm 'Letmein12!' /add /y
+cmd.exe /c localgroup administrators winrm /add
 cmd.exe /c net stop winrm
 cmd.exe /c sc config winrm start= auto
 cmd.exe /c net start winrm
@@ -47,8 +49,8 @@ cmd.exe /c net start winrm
 
 #Set-Service -Name 'WinRM' -StartupType Automatic
 #Set-ItemProperty 'HKLM:\SYSTEM\CurrentControlSet\Services\WinRM' -Name 'DelayedAutoStart' -Value 0
-
-netsh advfirewall firewall add rule name="ICMP Allow incoming V4 echo request" protocol=icmpv4:8,any dir=in action=allow
+cmd.exe /c netsh advfirewall firewall add rule name="WinRM 5985" protocol=TCP dir=in localport=5985 action=allow
+cmd.exe /c netsh advfirewall firewall add rule name="ICMP Allow incoming V4 echo request" protocol=icmpv4:8,any dir=in action=allow
 #cmd.exe /c net stop winrm
 #cmd.exe /c sc config winrm start= auto
 c#md.exe /c net start winrm
