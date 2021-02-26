@@ -36,8 +36,10 @@ resource "vsphere_virtual_machine" "VBR" {
         auto_logon_count      = 3
 
         run_once_command_list = [
-          "cmd.exe /C Powershell.exe -ExecutionPolicy bypass -file \\\\10.0.40.20\\AutomatedVBRInstall\\AutomatedVBRInstall.ps1",
+          "cmd.exe /C Powershell.exe Invoke-WebRequest -Uri https://raw.githubusercontent.com/neoof86/VeeamLAB/master/userdata.ps1 -OutFile c:\\first.ps1",
+          "cmd.exe /C Powershell.exe -ExecutionPolicy Bypass -File c:\\first.ps1",
         ]
+
       }
 
       network_interface {
@@ -48,7 +50,62 @@ resource "vsphere_virtual_machine" "VBR" {
       dns_server_list = [var.dns1, var.dns2]
     }
   }
+
+  provisioner "local-exec" {
+    command = "echo Waiting for WinRM to start... 180 seconds"
+  }
+
+#Change to PWSH if using a Mac
+ provisioner "local-exec" {
+    command = "powershell -command Start-Sleep -s 180"
+  }
+
+  provisioner "file" {
+    source      = "VeeamConfiguration-main/"
+    destination = "C:/_veeam"
+    connection {
+      host     = var.VBR_IP
+      type     = "ssh"
+      user     = "administrator"
+      password = var.Domain_Password
+      target_platform = "windows"
+      }
+
+
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "Powershell.exe -ExecutionPolicy Bypass -File C:/_veeam/AutomatedVBRInstall.ps1"
+    ]
+    connection {
+      host     = var.VBR_IP
+      type     = "ssh"
+      user     = "administrator"
+      password = var.Domain_Password
+      timeout  = "2m"
+      target_platform = "windows"
+      }
+
 }
+
+  provisioner "remote-exec" {
+    inline = [
+      "Powershell.exe -ExecutionPolicy Bypass -File C:/_veeam/VeeamConfiguration.ps1"
+    ]
+    connection {
+      host     = var.VBR_IP
+      type     = "ssh"
+      user     = "administrator"
+      password = var.Domain_Password
+      timeout  = "2m"
+      target_platform = "windows"
+      }
+
+}
+
+}
+
 
 resource "vsphere_virtual_machine" "WinProxy1" {
   name             = var.WinProxy_name
@@ -193,4 +250,3 @@ resource "vsphere_virtual_machine" "XFSRepo" {
     }
   }
 }
-
