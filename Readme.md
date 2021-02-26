@@ -34,4 +34,30 @@ Update - Jan 21st 2021
 
 Currently this terraform script will deploy 1 x VBR Management Server, 1 x Veeam Windows Proxy, 1 x Veeam Linux Proxy and 1 x XFS Linux Repository. The unattended installation scripts you will find in build-vbr.tf are going to be uploaded to a VeeamConfiguration repository, these scripts are stored on a lab share and for these to run I need to login to the newly created machine when available to run, I am exploring other options to better this both remote-exec and local-exec 
 
+Update - Feb 26th 2021 
 
+## Usage
+
+- Download the files also Terraform, this has been tested with v0.14.7
+- Create templates for Windows, Ubuntu 20_04 and 18_04 along with a CentOS template
+- Update the variables within terraform.tfvars so that they match your environment, All of these may need to be changed
+- Update the files within VeeamConfiguration-main/VeeamConfiguration.ps1 to match your environment
+- Create a resource pool and folder in vSphere match what is held within vsphere_resource_pool & vsphere_folder if they already do no exist
+- Copy your license file into VeeamConfiguration-main/Lic/
+- Copy your Veeam ISO in VeeamConfiguration-main/ISO
+- Issue a terraform init within the code folder
+- Issue a terraform plan within the code folder and ensure there are not errors
+- Perform a terraform apply and go grab a brew whilst it all builds :) 
+
+## Known issues 
+- Update the script to run with Powershell on Mac by updating the noted line <p align="center">
+  <img src=https://raw.githubusercontent.com/neoof86/VeeamLAB/master/_Images/pwsh.gif
+>
+</p>
+
+- Script may crash if the timeout happens when copying the files, for this you need to extend the timeout on in the build-VBR.tf powershell -command Start-Sleep -s (TimeinSeconds)
+
+## Things to enhance / fix
+- Some of the Powershell errors on the screen during deployment
+- Create a Powershell function to test for SSH rather than wait for a defined set of time that may fail or see if Terraform can wait for this
+- A central place to push out all the variables across the files 
