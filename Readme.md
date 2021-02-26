@@ -42,6 +42,10 @@ Update - Feb 26th 2021
 - Create templates for Windows, Ubuntu 20_04 and 18_04 along with a CentOS template
 - Update the variables within terraform.tfvars so that they match your environment, All of these may need to be changed
 - Update the files within VeeamConfiguration-main/VeeamConfiguration.ps1 to match your environment
+<p align="center">
+  <img src=https://github.com/neoof86/VeeamLAB/blob/master/_Images/vars.gif
+>
+</p>
 - Create a resource pool and folder in vSphere match what is held within vsphere_resource_pool & vsphere_folder if they already do no exist
 - Copy your license file into VeeamConfiguration-main/Lic/
 - Copy your Veeam ISO in VeeamConfiguration-main/ISO
@@ -50,7 +54,8 @@ Update - Feb 26th 2021
 - Perform a terraform apply and go grab a brew whilst it all builds :) 
 
 ## Known issues 
-- Update the script to run with Powershell on Mac by updating the noted line <p align="center">
+- Update the script to run with Powershell on Mac by updating the noted line 
+<p align="center">
   <img src=https://raw.githubusercontent.com/neoof86/VeeamLAB/master/_Images/pwsh.gif
 >
 </p>
