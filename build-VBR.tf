@@ -52,12 +52,12 @@ resource "vsphere_virtual_machine" "VBR" {
   }
 
   provisioner "local-exec" {
-    command = "echo Waiting for WinRM to start... 180 seconds"
+    command = "echo Waiting for WinRM/SSH to start... 180 seconds"
   }
 
 #Change to PWSH if using a Mac
  provisioner "local-exec" {
-    command = "powershell -command Start-Sleep -s 180"
+    command = "powershell ./porttest.ps1 ${var.VBR_IP} 22"
   }
 
   provisioner "file" {
@@ -70,7 +70,7 @@ resource "vsphere_virtual_machine" "VBR" {
       password = var.Domain_Password
       target_platform = "windows"
       }
-
+ 
 
   }
 
@@ -86,7 +86,7 @@ resource "vsphere_virtual_machine" "VBR" {
       timeout  = "2m"
       target_platform = "windows"
       }
-
+ 
 }
 
   provisioner "remote-exec" {
@@ -101,7 +101,22 @@ resource "vsphere_virtual_machine" "VBR" {
       timeout  = "2m"
       target_platform = "windows"
       }
+ 
+}
 
+  provisioner "remote-exec" {
+    inline = [
+      "Powershell.exe -ExecutionPolicy Bypass -File C:/_veeam/Agents.ps1"
+    ]
+    connection {
+      host     = var.VBR_IP
+      type     = "ssh"
+      user     = "administrator"
+      password = var.Domain_Password
+      timeout  = "2m"
+      target_platform = "windows"
+      }
+ 
 }
 
 }
@@ -250,3 +265,4 @@ resource "vsphere_virtual_machine" "XFSRepo" {
     }
   }
 }
+
