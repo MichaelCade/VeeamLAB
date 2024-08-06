@@ -1,0 +1,33 @@
+- name: Veeam Backup & Replication Install with Remote PostgreSQL Server
+  hosts: veeam_vbr
+  tasks:
+    - name: Reboot Windows server if needed
+      win_reboot:
+        msg: "Reboot initiated by Ansible due to pending operations"
+        pre_reboot_delay: 5
+
+    - name: Wait for system to come back online
+      wait_for_connection:
+        delay: 10
+        timeout: 300
+
+    - include_role:
+        name: veeamhub.veeam.veeam_vas
+        tasks_from: vbr_install
+      vars:
+        version: "12"
+        iso_download: true
+        license: true
+        #source_license: "/home/veeam/ansible/veeam/license.lic"
+        source_license: "/Users/michaelcade/demo-project/veeam/ansible/license.lic"
+        sql_engine: "1"
+        sql_authentication: "1"
+        sql_install_username: "sql_install"
+        sql_install_password: "Passw0rd999!"
+        sql_service_username: "svc_sql"
+        sql_service_password: "Passw0rd999!"
+        sql_username: "postgres"
+        sql_password: "Passw0rd999!"
+
+
+

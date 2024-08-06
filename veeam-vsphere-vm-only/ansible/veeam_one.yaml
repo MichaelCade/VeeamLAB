@@ -1,0 +1,47 @@
+- name: Installing Veeam ONE Install (Typical Deployment)
+  gather_facts: false
+  hosts: veeam_one
+
+  vars:
+    version: "12"
+    iso_download: false #this way ISO is only downloaded once
+    license: true
+    #source_license: "/home/veeam/ansible/veeam/license.lic"
+    source_license: "/Users/michaelcade/demo-project/veeam/ansible/license.lic"
+    sql_express_setup: true
+    sql_service_username: "svc_sql"
+    sql_service_password: "Passw0rd999!"
+    one_create_service_account: true #true==local false==domain
+    one_username: "svc_one"
+    one_password: "Passw0rd999!"
+    # https://docs.ansible.com/ansible/latest/user_guide/playbooks_vault.html#single-encrypted-variable
+  tasks:
+    - name: Reboot Windows server if needed
+      win_reboot:
+        msg: "Reboot initiated by Ansible due to pending operations"
+        pre_reboot_delay: 5
+
+    - name: Wait for system to come back online
+      wait_for_connection:
+        delay: 10
+        timeout: 300
+
+    - name: Gather environment facts
+      ansible.builtin.setup:
+        gather_subset:
+          - "env"
+
+    - name: Veeam ONE Server installation tasks
+      include_role:
+        name: veeamhub.veeam.veeam_vas
+        tasks_from: one_server_install
+      vars:
+        iso_download: true #this way ISO is only downloaded once
+    - name: Veeam ONE Web UI installation tasks
+      include_role:
+        name: veeamhub.veeam.veeam_vas
+        tasks_from: one_web_ui_install
+    - name: Veeam ONE Monitoring Client installation tasks
+      include_role:
+        name: veeamhub.veeam.veeam_vas
+        tasks_from: one_client_install
